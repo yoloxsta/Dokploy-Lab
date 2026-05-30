@@ -1,7 +1,7 @@
 {
   "name": "demo-svc",
-  "version": "1.0.0",
-  "description": "A simple demo service for Dokploy",
+  "version": "2.0.0",
+  "description": "A demo service with CRUD API for Dokploy",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
