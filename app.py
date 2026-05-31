@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
+app.config['ENV'] = os.environ.get('FLASK_ENV', 'development')
 
 # In-memory data store
 items = [
@@ -24,7 +25,8 @@ def index():
 @app.route('/health')
 def health():
     return jsonify({
-        "status": "healthy"
+        "status": "healthy",
+        "flask_env": app.config['ENV']
     })
 
 
