@@ -84,3 +84,16 @@ python app.py
 ```
 
 The service will run at `http://localhost:3000`
+
+###
+```
+Make it permanent
+
+Add it to your bash profile:
+
+echo 'source <(kubectl completion bash)' >> ~/.bashrc
+
+Then reload:
+
+source ~/.bashrc
+```
