@@ -85,7 +85,7 @@ python app.py
 
 The service will run at `http://localhost:3000`
 
-###
+### Kubectl auto Complete
 ```
 Make it permanent
 
@@ -96,4 +96,14 @@ echo 'source <(kubectl completion bash)' >> ~/.bashrc
 Then reload:
 
 source ~/.bashrc
+```
+
+### Agic Issues
+
+```
+# Start the Application Gateway
+az network application-gateway start \
+  --name ingress-appgateway \
+  --resource-group MC_June-RG_June-AKS_centralindia
+
 ```
