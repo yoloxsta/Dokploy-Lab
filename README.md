@@ -344,4 +344,109 @@ az network application-gateway start \
   --name ingress-appgateway \
   --resource-group MC_June-RG_June-AKS_centralindia
 ```
+###
+```
+azureuser@June-VM:~$ cat ingress-test.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    appgw.ingress.kubernetes.io/use-private-ip: "true"
+spec:
+  ingressClassName: azure-application-gateway
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+azureuser@June-VM:~$ cat public.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-1
+  template:
+    metadata:
+      labels:
+        app: nginx-1
+    spec:
+      containers:
+        - name: nginx-1
+          image: nginx
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-1
+spec:
+  selector:
+    app: nginx-1
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress-1
+spec:
+  ingressClassName: azure-application-gateway
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx-1
+                port:
+                  number: 80
+azureuser@June-VM:~$
+```
